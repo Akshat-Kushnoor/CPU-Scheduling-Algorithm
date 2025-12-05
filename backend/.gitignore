@@ -7,6 +7,8 @@ node_modules/
 .env.production
 .env.development
 
+temp.txt
+
 # Logs
 npm-debug.log*
 yarn-debug.log*
