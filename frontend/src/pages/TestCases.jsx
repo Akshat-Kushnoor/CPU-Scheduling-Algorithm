@@ -86,7 +86,9 @@ return (
 
     {/* Upload Test Case */}
     <section className="section bg-white dark:bg-gray-900 p-5 rounded-lg shadow space-y-3">
-      <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-100">Upload Test Case</h2>
+      <div className="bg-white/10">
+        <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-100">Click to select a file</h2>
+      </div>
 
       <form onSubmit={handleUpload} className="flex items-center gap-3">
         <input
