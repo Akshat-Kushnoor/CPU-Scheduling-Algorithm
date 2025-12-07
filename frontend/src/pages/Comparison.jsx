@@ -65,104 +65,117 @@ function Comparison() {
     }
   };
 
-  return (
-    <div className="page comparison">
-      <h1>Algorithm Comparison</h1>
+return (
+  <div className="page comparison max-w-5xl mx-auto p-6">
+    <h1 className="text-3xl font-bold mb-6 text-center">Algorithm Comparison</h1>
 
-      <form onSubmit={handleRunComparison} className="comparison-form">
-        {/* Process Input */}
-        <section className="section">
-          <h2>Process Input</h2>
-          <textarea
-            rows={10}
-            value={processesText}
-            onChange={(e) => setProcessesText(e.target.value)}
-            style={{ width: '100%', fontFamily: 'monospace' }}
-          />
-        </section>
+    <form onSubmit={handleRunComparison} className="comparison-form space-y-8">
+      
+      {/* Process Input */}
+      <section className="section bg-white p-5 rounded-lg shadow">
+        <h2 className="text-xl font-semibold mb-3">Process Input</h2>
+        <textarea
+          rows={10}
+          value={processesText}
+          onChange={(e) => setProcessesText(e.target.value)}
+          className="w-full border rounded p-3 font-mono text-sm focus:ring focus:ring-blue-300"
+        />
+      </section>
 
-        {/* Multiple Algorithm Selector */}
-        <section className="section">
-          <h2>Algorithms</h2>
-          <p>Hold Ctrl / Cmd to select multiple algorithms.</p>
-          <select
-            multiple
-            size={AVAILABLE_ALGOS.length}
-            value={selectedAlgos}
-            onChange={handleAlgorithmsChange}
-          >
-            {AVAILABLE_ALGOS.map((algo) => (
-              <option key={algo} value={algo}>
-                {algo}
-              </option>
-            ))}
-          </select>
+      {/* Multiple Algorithm Selector */}
+      <section className="section bg-white p-5 rounded-lg shadow">
+        <h2 className="text-xl font-semibold mb-3">Algorithms</h2>
 
-          {selectedAlgos.includes('RR') && (
-            <div style={{ marginTop: '0.5rem' }}>
-              <label>
-                Time Quantum (used for RR):&nbsp;
-                <input
-                  type="number"
-                  min={1}
-                  value={timeQuantum}
-                  onChange={(e) => setTimeQuantum(e.target.value)}
-                />
-              </label>
-            </div>
-          )}
-        </section>
-
-        <section className="section">
-          <button type="submit" disabled={loading}>
-            {loading ? 'Comparing...' : 'Compare Algorithms'}
-          </button>
-        </section>
-      </form>
-
-      {error && (
-        <p className="error" style={{ color: 'red', marginTop: '1rem' }}>
-          {error}
+        <p className="text-gray-600 mb-2">
+          Hold Ctrl / Cmd to select multiple algorithms.
         </p>
-      )}
 
-      {/* ComparisonChart */}
-      {result && (
-        <section className="section">
-          <h2>Comparison Results</h2>
+        <select
+          multiple
+          size={AVAILABLE_ALGOS.length}
+          value={selectedAlgos}
+          onChange={handleAlgorithmsChange}
+          className="border rounded p-2 w-full max-w-xs focus:ring focus:ring-blue-300"
+        >
+          {AVAILABLE_ALGOS.map((algo) => (
+            <option key={algo} value={algo}>
+              {algo}
+            </option>
+          ))}
+        </select>
 
-          {/* If your backend returns a structured comparison object,
-              you can render a table; here we fall back to JSON. */}
-          {Array.isArray(result.comparisons) ? (
-            <table border="1" cellPadding="4">
-              <thead>
+        {selectedAlgos.includes("RR") && (
+          <div className="mt-2">
+            <label className="flex items-center gap-2">
+              Time Quantum (used for RR):
+              <input
+                type="number"
+                min={1}
+                value={timeQuantum}
+                onChange={(e) => setTimeQuantum(e.target.value)}
+                className="border rounded p-2 w-24 focus:ring focus:ring-blue-300"
+              />
+            </label>
+          </div>
+        )}
+      </section>
+
+      <section className="section">
+        <button
+          type="submit"
+          disabled={loading}
+          className="bg-blue-600 text-white px-6 py-3 rounded shadow hover:bg-blue-700 disabled:bg-gray-400 transition"
+        >
+          {loading ? "Comparing..." : "Compare Algorithms"}
+        </button>
+      </section>
+    </form>
+
+    {error && (
+      <p className="text-red-600 mt-4 font-semibold">{error}</p>
+    )}
+
+    {/* ComparisonChart */}
+    {result && (
+      <section className="section bg-white p-5 rounded-lg shadow mt-8">
+        <h2 className="text-xl font-semibold mb-4">Comparison Results</h2>
+
+        {Array.isArray(result.comparisons) ? (
+          <div className="overflow-x-auto">
+            <table className="min-w-full border border-gray-300 text-left text-sm">
+              <thead className="bg-gray-100">
                 <tr>
-                  <th>Algorithm</th>
-                  <th>Avg Waiting Time</th>
-                  <th>Avg Turnaround Time</th>
-                  <th>Throughput</th>
-                  <th>CPU Utilization</th>
+                  <th className="border px-3 py-2">Algorithm</th>
+                  <th className="border px-3 py-2">Avg Waiting Time</th>
+                  <th className="border px-3 py-2">Avg Turnaround Time</th>
+                  <th className="border px-3 py-2">Throughput</th>
+                  <th className="border px-3 py-2">CPU Utilization</th>
                 </tr>
               </thead>
+
               <tbody>
                 {result.comparisons.map((c) => (
-                  <tr key={c.algorithm}>
-                    <td>{c.algorithm}</td>
-                    <td>{c.metrics?.avgWaitingTime ?? '-'}</td>
-                    <td>{c.metrics?.avgTurnaroundTime ?? '-'}</td>
-                    <td>{c.metrics?.throughput ?? '-'}</td>
-                    <td>{c.metrics?.cpuUtilization ?? '-'}</td>
+                  <tr key={c.algorithm} className="odd:bg-white even:bg-gray-50">
+                    <td className="border px-3 py-2 font-medium">{c.algorithm}</td>
+                    <td className="border px-3 py-2">{c.metrics?.avgWaitingTime ?? "-"}</td>
+                    <td className="border px-3 py-2">{c.metrics?.avgTurnaroundTime ?? "-"}</td>
+                    <td className="border px-3 py-2">{c.metrics?.throughput ?? "-"}</td>
+                    <td className="border px-3 py-2">{c.metrics?.cpuUtilization ?? "-"}</td>
                   </tr>
                 ))}
               </tbody>
             </table>
-          ) : (
-            <pre>{JSON.stringify(result, null, 2)}</pre>
-          )}
-        </section>
-      )}
-    </div>
-  );
+          </div>
+        ) : (
+          <pre className="bg-gray-100 p-3 rounded text-sm overflow-auto">
+            {JSON.stringify(result, null, 2)}
+          </pre>
+        )}
+      </section>
+    )}
+  </div>
+);
+
 }
 
 export default Comparison;
