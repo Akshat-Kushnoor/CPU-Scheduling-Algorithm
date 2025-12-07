@@ -1,106 +1,119 @@
-// src/components/Navbar.jsx
-import React, { useState } from 'react';
-import { motion } from 'framer-motion';
+import React from 'react';
+import { NavLink } from 'react-router-dom';
 
-const navLinks = ['Home', 'Simulator', 'Comparison', 'Test Cases'];
+const navLinkClass =
+  'px-3 py-1 rounded-md text-sm font-medium transition-colors border border-transparent';
+const activeClass =
+  'bg-primary text-white border-primary';
+const inactiveClass =
+  'text-gray-700 hover:text-primary hover:bg-red-50 dark:text-gray-200 dark:hover:text-white dark:hover:bg-red-900/30';
 
-export default function Navbar({ current = 'Home', onNavClick }) {
-  const [open, setOpen] = useState(false);
-
+const Navbar = ({ theme, toggleTheme }) => {
   return (
-    <motion.nav
-      initial={{ y: -40, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      transition={{ type: 'spring', stiffness: 260, damping: 24 }}
-      className="sticky top-0 z-30 border-b border-slate-200 bg-white/80 backdrop-blur dark:border-slate-800 dark:bg-slate-900/80"
-    >
-      <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3 sm:px-6 lg:px-8">
+    <header className="border-b border-gray-200 dark:border-gray-800 bg-white/80 dark:bg-gray-900/80 backdrop-blur">
+      <div className="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between gap-4">
         <div className="flex items-center gap-2">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-indigo-500 font-bold text-white shadow">
-            CS
+          <div className="h-8 w-8 rounded-md bg-primary flex items-center justify-center text-white font-bold text-sm">
+            CPU
           </div>
-          <div className="flex flex-col">
-            <span className="text-sm font-semibold text-slate-900 dark:text-slate-100">
-              CPU Scheduler
-            </span>
-            <span className="text-xs text-slate-500 dark:text-slate-400">
-              Algorithm Visualizer
-            </span>
+          <div>
+            <h1 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-gray-100">
+              CPU Scheduler Simulator
+            </h1>
+            <p className="text-xs text-gray-500 dark:text-gray-400">
+              Visualize and compare scheduling algorithms
+            </p>
           </div>
         </div>
 
-        {/* Desktop nav */}
-        <div className="hidden items-center gap-6 md:flex">
-          {navLinks.map(link => (
-            <button
-              key={link}
-              type="button"
-              onClick={() => onNavClick?.(link)}
-              className={[
-                'text-sm font-medium transition-colors',
-                link === current
-                  ? 'text-indigo-600 dark:text-indigo-400'
-                  : 'text-slate-600 hover:text-slate-900 dark:text-slate-300 dark:hover:text-white',
-              ].join(' ')}
+        <div className="flex items-center gap-3">
+          <nav className="hidden sm:flex items-center gap-1">
+            <NavLink
+              to="/simulate"
+              className={({ isActive }) =>
+                `${navLinkClass} ${isActive ? activeClass : inactiveClass}`
+              }
             >
-              {link}
-            </button>
-          ))}
-        </div>
+              Simulate
+            </NavLink>
+            <NavLink
+              to="/compare"
+              className={({ isActive }) =>
+                `${navLinkClass} ${isActive ? activeClass : inactiveClass}`
+              }
+            >
+              Compare
+            </NavLink>
+            <NavLink
+              to="/testcases"
+              className={({ isActive }) =>
+                `${navLinkClass} ${isActive ? activeClass : inactiveClass}`
+              }
+            >
+              Testcases
+            </NavLink>
+          </nav>
 
-        {/* Mobile menu button */}
-        <button
-          type="button"
-          className="inline-flex items-center justify-center rounded-md p-2 text-slate-600 hover:bg-slate-100 hover:text-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white md:hidden"
-          onClick={() => setOpen(o => !o)}
-          aria-label="Toggle navigation"
-        >
-          <span className="sr-only">Open main menu</span>
-          <div className="space-y-1.5">
-            <span
-              className={`block h-0.5 w-5 rounded-full bg-current transition-transform ${
-                open ? 'translate-y-1.5 rotate-45' : ''
-              }`}
-            />
-            <span
-              className={`block h-0.5 w-5 rounded-full bg-current transition-opacity ${
-                open ? 'opacity-0' : 'opacity-100'
-              }`}
-            />
-            <span
-              className={`block h-0.5 w-5 rounded-full bg-current transition-transform ${
-                open ? '-translate-y-1.5 -rotate-45' : ''
-              }`}
-            />
-          </div>
-        </button>
+          <button
+            type="button"
+            onClick={toggleTheme}
+            className="inline-flex items-center justify-center w-9 h-9 rounded-full border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-700 dark:text-gray-200 hover:border-primary hover:text-primary dark:hover:border-primary dark:hover:text-primary transition-colors"
+            aria-label="Toggle theme"
+          >
+            {theme === 'dark' ? (
+              // Sun icon
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-4 w-4"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+              >
+                <path d="M10 3.5a.75.75 0 0 1 .75.75V6a.75.75 0 0 1-1.5 0V4.25A.75.75 0 0 1 10 3.5Zm0 7a2.25 2.25 0 1 0 0-4.5 2.25 2.25 0 0 0 0 4.5Zm5.657-5.657a.75.75 0 0 1 0 1.06L14.72 7.79a.75.75 0 1 1-1.06-1.06l.937-.938a.75.75 0 0 1 1.06 0Zm-11.314 0a.75.75 0 0 1 1.06 0l.938.938A.75.75 0 0 1 5.28 7.79L4.343 6.853a.75.75 0 0 1 0-1.06ZM3.5 10a.75.75 0 0 1 .75-.75H6a.75.75 0 0 1 0 1.5H4.25A.75.75 0 0 1 3.5 10Zm9.25 0a.75.75 0 0 1 .75-.75h1.75a.75.75 0 0 1 0 1.5H13.5a.75.75 0 0 1-.75-.75Zm-.84 3.16a.75.75 0 0 1 1.06 0l.938.938a.75.75 0 1 1-1.06 1.06l-.938-.938a.75.75 0 0 1 0-1.06Zm-7.78 0a.75.75 0 0 1 1.06 0l.938.938a.75.75 0 1 1-1.06 1.06l-.938-.938a.75.75 0 0 1 0-1.06ZM10 14a.75.75 0 0 1 .75.75V16.5a.75.75 0 0 1-1.5 0v-1.75A.75.75 0 0 1 10 14Z" />
+              </svg>
+            ) : (
+              // Moon icon
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-4 w-4"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+              >
+                <path d="M17.293 13.293A8 8 0 0 1 6.707 2.707a.75.75 0 0 0-.98-.98A9.5 9.5 0 1 0 18.273 14.273a.75.75 0 0 0-.98-.98Z" />
+              </svg>
+            )}
+          </button>
+        </div>
       </div>
 
-      {/* Mobile menu */}
-      {open && (
-        <div className="border-t border-slate-200 bg-white/95 px-4 pb-3 pt-2 shadow-sm dark:border-slate-800 dark:bg-slate-900/95 md:hidden">
-          <div className="space-y-1">
-            {navLinks.map(link => (
-              <button
-                key={link}
-                type="button"
-                onClick={() => {
-                  onNavClick?.(link);
-                  setOpen(false);
-                }}
-                className={[
-                  'block w-full rounded-md px-3 py-2 text-left text-sm font-medium',
-                  link === current
-                    ? 'bg-indigo-50 text-indigo-700 dark:bg-slate-800 dark:text-indigo-300'
-                    : 'text-slate-700 hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-800',
-                ].join(' ')}
-              >
-                {link}
-              </button>
-            ))}
-          </div>
-        </div>
-      )}
-    </motion.nav>
+      {/* Mobile nav */}
+      <nav className="sm:hidden border-t border-gray-200 dark:border-gray-800 px-2 pb-2 flex gap-1">
+        <NavLink
+          to="/simulate"
+          className={({ isActive }) =>
+            `flex-1 text-center text-xs py-1 mt-1 rounded-md ${isActive ? activeClass : inactiveClass}`
+          }
+        >
+          Simulate
+        </NavLink>
+        <NavLink
+          to="/compare"
+          className={({ isActive }) =>
+            `flex-1 text-center text-xs py-1 mt-1 rounded-md ${isActive ? activeClass : inactiveClass}`
+          }
+        >
+          Compare
+        </NavLink>
+        <NavLink
+          to="/testcases"
+          className={({ isActive }) =>
+            `flex-1 text-center text-xs py-1 mt-1 rounded-md ${isActive ? activeClass : inactiveClass}`
+          }
+        >
+          Testcases
+        </NavLink>
+      </nav>
+    </header>
   );
-}
+};
+
+export default Navbar;
