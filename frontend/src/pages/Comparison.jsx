@@ -139,7 +139,7 @@ function ComparisonBarChart({ data, metric, label, lowerIsBetter = true }) {
                   fill="#059669"
                   fontWeight="600"
                 >
-                  ★ Best
+                 @ 
                 </text>
               )}
               
